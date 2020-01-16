@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JogoService } from 'src/app/jogo/jogo.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tela-apresentacao',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TelaApresentacaoComponent implements OnInit {
 
-  constructor() { }
+  nomeJogador = '';
+
+  constructor(
+    private jogoService: JogoService,
+    private router: Router) { }
 
   ngOnInit() {
   }
 
+  iniciarJogo(): void {
+    const jogoRoute = 'jogo';
+
+    this.jogoService.criarNovoJogo(this.nomeJogador);
+    this.router.navigate([jogoRoute]);
+  }
 }

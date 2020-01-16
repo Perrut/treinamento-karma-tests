@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TelaApresentacaoModule } from './tela-apresentacao/tela-apresentacao.module';
+import { JogoModule } from './jogo/jogo.module';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { TelaApresentacaoModule } from './tela-apresentacao/tela-apresentacao.mo
   imports: [
     BrowserModule,
     AppRoutingModule,
+    JogoModule,
     TelaApresentacaoModule
   ],
   providers: [],
