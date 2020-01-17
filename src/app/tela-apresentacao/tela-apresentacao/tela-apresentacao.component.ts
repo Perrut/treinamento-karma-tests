@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { JogoService } from 'src/app/jogo/jogo.service';
 import { Router } from '@angular/router';
+import { JogoService } from 'src/app/jogo/services/jogo.service';
 
 @Component({
   selector: 'app-tela-apresentacao',

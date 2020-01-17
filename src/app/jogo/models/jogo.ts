@@ -1,6 +1,6 @@
 // tslint:disable: variable-name
 export class Jogo {
-    private _oid: string;
+    private _id: string;
     private _nomeJogador: string;
     private _pontos = 0;
     private _perguntasRespondidas: string[] = [];
@@ -9,8 +9,8 @@ export class Jogo {
         this.nomeJogador = nomeJogador;
     }
 
-    get oid(): string {
-        return this._oid;
+    get id(): string {
+        return this._id;
     }
 
     get nomeJogador(): string {

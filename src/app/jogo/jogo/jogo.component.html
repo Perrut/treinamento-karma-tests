@@ -1,1 +1,9 @@
-<p>jogo works!</p>
+<h2>{{perguntaAtual.pergunta}}</h2>
+
+<form>
+    <ul>
+        <li 
+          *ngFor="let r of perguntaAtual.respostas"
+          (click)="enviarResposta(perguntaAtual, r)">{{r.conteudo}}</li>
+    </ul>
+</form>
