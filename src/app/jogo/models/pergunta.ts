@@ -8,6 +8,7 @@ export class Pergunta {
     private _pergunta: string;
     private _respostas: Resposta[];
     private _dificuldade: DificuldadePergunta;
+    private _valor: number;
 
     constructor(pergunta: string, respostas: Resposta[], dificuldade: DificuldadePergunta) {
         this._pergunta = pergunta;
@@ -41,5 +42,18 @@ export class Pergunta {
 
     set dificuldadePergunta(dificuldade: DificuldadePergunta) {
         this._dificuldade = dificuldade;
+    }
+
+    get valor(): number {
+        switch (this._dificuldade) {
+            case DificuldadePergunta.FACIL:
+                return 1000;
+            case DificuldadePergunta.MEDIO:
+                return 10000;
+            case DificuldadePergunta.DIFICIL:
+                return 100000;
+            case DificuldadePergunta.MUITO_DIFICIL:
+                return 1000000;
+        }
     }
 }

@@ -12,8 +12,8 @@ import { perguntas } from './perguntas';
 export class JogoService {
 
   private _jogo: Jogo;
-
-  private _perguntaAtual = 0;
+  private _perguntaAtualIndex = 0;
+  private _perguntaAtual: Pergunta;
 
   constructor() { }
 
@@ -41,14 +41,24 @@ export class JogoService {
   }
 
   proximaPergunta(): Pergunta {
-    const proximaPergunta = perguntas[this._perguntaAtual].pergunta;
+    const proximaPergunta = perguntas[this._perguntaAtualIndex].pergunta;
 
     if (proximaPergunta) {
-      this._perguntaAtual += 1;
+      this._perguntaAtualIndex += 1;
+      this._perguntaAtual = proximaPergunta;
     } else {
-      this._perguntaAtual = 0;
+      this._perguntaAtualIndex = 0;
+      this._perguntaAtual = null;
     }
 
     return proximaPergunta ? proximaPergunta : null;
+  }
+
+  getPerguntaAtual(): Pergunta {
+    return this._perguntaAtual;
+  }
+
+  verificaProximaPergunta(): Pergunta {
+    return perguntas[this._perguntaAtualIndex + 1].pergunta;
   }
 }
