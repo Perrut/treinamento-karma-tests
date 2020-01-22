@@ -5,6 +5,7 @@ import { Resposta } from '../models/resposta';
 import { JogoService } from '../services/jogo.service';
 import { EstadoResposta } from '../enums/estado-resposta';
 import { perguntas } from '../services/perguntas';
+import { Router } from '@angular/router';
 
 // tslint:disable: variable-name
 @Component({
@@ -18,7 +19,9 @@ export class JogoComponent implements OnInit {
 
   public perguntaAtual: Pergunta;
 
-  constructor(private _jogoService: JogoService) { }
+  constructor(
+    private _jogoService: JogoService,
+    private _router: Router) { }
 
   ngOnInit() {
     this.jogo = this._jogoService.jogo;
@@ -27,7 +30,7 @@ export class JogoComponent implements OnInit {
     console.log(perguntas);
   }
 
-  enviarResposta(pergunta: Pergunta, resposta: Resposta) {
+  enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
     this._jogoService.responder(pergunta, resposta).subscribe((respostaCorreta) => {
       if (respostaCorreta) {
         resposta.estadoResposta = EstadoResposta.CORRETA;
@@ -36,5 +39,15 @@ export class JogoComponent implements OnInit {
         resposta.estadoResposta = EstadoResposta.INCORRETA;
       }
     });
+  }
+
+  proximaPergunta(): void {
+    const proxima = this._jogoService.proximaPergunta();
+
+    if (proxima) {
+      this.perguntaAtual = proxima;
+    } else {
+      this._router.navigate([]);
+    }
   }
 }

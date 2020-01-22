@@ -43,8 +43,12 @@ export class JogoService {
   proximaPergunta(): Pergunta {
     const proximaPergunta = perguntas[this._perguntaAtual].pergunta;
 
-    this._perguntaAtual += 1;
+    if (proximaPergunta) {
+      this._perguntaAtual += 1;
+    } else {
+      this._perguntaAtual = 0;
+    }
 
-    return proximaPergunta;
+    return proximaPergunta ? proximaPergunta : null;
   }
 }

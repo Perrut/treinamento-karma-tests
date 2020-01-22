@@ -1,5 +1,6 @@
 import { Pergunta } from '../models/pergunta';
 import { Resposta } from '../models/resposta';
+import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
 
 export const perguntas: { pergunta: Pergunta, resposta: number }[] = [
     {
@@ -10,7 +11,7 @@ export const perguntas: { pergunta: Pergunta, resposta: number }[] = [
                     new Resposta('resposta 2'),
                     new Resposta('resposta 3'),
                     new Resposta('resposta 4'),
-                ]),
+                ], DificuldadePergunta.FACIL),
         resposta: Math.floor((Math.random() * 4))
     },
     {
@@ -21,7 +22,7 @@ export const perguntas: { pergunta: Pergunta, resposta: number }[] = [
                     new Resposta('resposta 2'),
                     new Resposta('resposta 3'),
                     new Resposta('resposta 4'),
-                ]),
+                ], DificuldadePergunta.MEDIO),
         resposta: Math.floor((Math.random() * 4))
     },
     {
@@ -32,7 +33,7 @@ export const perguntas: { pergunta: Pergunta, resposta: number }[] = [
                     new Resposta('resposta 2'),
                     new Resposta('resposta 3'),
                     new Resposta('resposta 4'),
-                ]),
+                ], DificuldadePergunta.DIFICIL),
         resposta: Math.floor((Math.random() * 4))
     },
 ];

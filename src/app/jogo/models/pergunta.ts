@@ -1,4 +1,5 @@
 import { Resposta } from './resposta';
+import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
 
 // tslint:disable: variable-name
 export class Pergunta {
@@ -6,10 +7,12 @@ export class Pergunta {
     private _id: string = Math.floor(Math.random() * 500) as unknown as string;
     private _pergunta: string;
     private _respostas: Resposta[];
+    private _dificuldade: DificuldadePergunta;
 
-    constructor(pergunta: string, respostas: Resposta[]) {
+    constructor(pergunta: string, respostas: Resposta[], dificuldade: DificuldadePergunta) {
         this._pergunta = pergunta;
         this._respostas = respostas;
+        this._dificuldade = dificuldade;
     }
 
     get id(): string {
@@ -30,5 +33,13 @@ export class Pergunta {
 
     set respostas(respostas: Resposta[]) {
         this._respostas = respostas;
+    }
+
+    get dificuldadePergunta(): DificuldadePergunta {
+        return this._dificuldade;
+    }
+
+    set dificuldadePergunta(dificuldade: DificuldadePergunta) {
+        this._dificuldade = dificuldade;
     }
 }
