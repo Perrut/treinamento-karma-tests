@@ -1,11 +1,11 @@
-<h2>{{perguntaAtual.pergunta}}</h2>
+<div class="tela">
+    <h2>{{perguntaAtual.pergunta}}</h2>
 
-<form>
-    <ul>
-        <li 
-          *ngFor="let r of perguntaAtual.respostas"
-          (click)="enviarResposta(perguntaAtual, r)">{{r.conteudo}}</li>
-    </ul>
-</form>
+    <form>
+        <ul>
+            <li *ngFor="let r of perguntaAtual.respostas" (click)="enviarResposta(perguntaAtual, r)">{{r.conteudo}}</li>
+        </ul>
+    </form>
 
-<app-status-jogo></app-status-jogo>
+    <app-status-jogo></app-status-jogo>
+</div>
