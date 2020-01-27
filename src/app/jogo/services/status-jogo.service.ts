@@ -11,7 +11,6 @@ export class StatusJogoService {
   constructor(private _jogoService: JogoService) { }
 
   atualizaStatus(status: { errar: string, parar: string, acertar: string }): { errar: string, parar: string, acertar: string } {
-    console.log('hey');
     let { errar, parar, acertar } = status;
     parar = '' + this._jogoService.jogo.pontos;
 

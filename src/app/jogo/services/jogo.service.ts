@@ -62,7 +62,7 @@ export class JogoService {
     return perguntas[this._perguntaAtualIndex + 1].pergunta;
   }
 
-  atualizaPontuacao(){
-    this._jogo.pontos += 10;
+  atualizaPontuacao() {
+    this._jogo.pontos += this._perguntaAtual.valor;
   }
 }

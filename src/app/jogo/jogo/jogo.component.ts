@@ -16,8 +16,6 @@ import { perguntas } from '../services/perguntas';
 })
 export class JogoComponent implements OnInit {
 
-  public jogo: Jogo;
-
   public perguntaAtual: Pergunta;
 
   @ViewChild(StatusJogoComponent, { static: false }) statusComponent: StatusJogoComponent;
@@ -27,7 +25,6 @@ export class JogoComponent implements OnInit {
     private _router: Router) { }
 
   ngOnInit() {
-    this.jogo = this._jogoService.jogo;
     this.perguntaAtual = this._jogoService.proximaPergunta();
     console.log(perguntas);
   }
