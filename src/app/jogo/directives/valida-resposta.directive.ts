@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, HostListener } from '@angular/core';
 import { EstadoResposta } from '../enums/estado-resposta';
 
 // tslint:disable: variable-name
@@ -15,6 +15,11 @@ export class ValidaRespostaDirective implements OnChanges {
 
   ngOnChanges() {
     this.colorirResposta();
+  }
+
+  @HostListener('mouseover')
+  changeCursor(): void {
+    this.el.nativeElement.style.cursor = 'pointer';
   }
 
   colorirResposta(): void {

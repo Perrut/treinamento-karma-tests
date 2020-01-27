@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Jogo } from '../models/jogo';
 import { Pergunta } from '../models/pergunta';
 import { Resposta } from '../models/resposta';
 import { JogoService } from '../services/jogo.service';
 import { EstadoResposta } from '../enums/estado-resposta';
 import { Router } from '@angular/router';
+import { StatusJogoComponent } from '../status-jogo/status-jogo.component';
+import { perguntas } from '../services/perguntas';
 
 // tslint:disable: variable-name
 @Component({
@@ -18,6 +20,8 @@ export class JogoComponent implements OnInit {
 
   public perguntaAtual: Pergunta;
 
+  @ViewChild(StatusJogoComponent, { static: false }) statusComponent: StatusJogoComponent;
+
   constructor(
     private _jogoService: JogoService,
     private _router: Router) { }
@@ -25,17 +29,20 @@ export class JogoComponent implements OnInit {
   ngOnInit() {
     this.jogo = this._jogoService.jogo;
     this.perguntaAtual = this._jogoService.proximaPergunta();
+    console.log(perguntas);
   }
 
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
     this._jogoService.responder(pergunta, resposta).subscribe((respostaCorreta) => {
       if (respostaCorreta.correta) {
         resposta.estadoResposta = EstadoResposta.CORRETA;
+        this._jogoService.atualizaPontuacao();
         this.proximaPergunta();
       } else {
         resposta.estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
       }
+      this.statusComponent.atualizaStatus();
     });
   }
 

@@ -61,4 +61,8 @@ export class JogoService {
   verificaProximaPergunta(): Pergunta {
     return perguntas[this._perguntaAtualIndex + 1].pergunta;
   }
+
+  atualizaPontuacao(){
+    this._jogo.pontos += 10;
+  }
 }
