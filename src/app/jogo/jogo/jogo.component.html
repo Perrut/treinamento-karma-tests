@@ -3,7 +3,9 @@
 
     <form>
         <ul>
-            <li *ngFor="let r of perguntaAtual.respostas" (click)="enviarResposta(perguntaAtual, r)">{{r.conteudo}}</li>
+            <li *ngFor="let r of perguntaAtual.respostas" (click)="enviarResposta(perguntaAtual, r)">
+                <p [appValidaResposta]="r.estadoResposta">{{r.conteudo}}</p>
+            </li>
         </ul>
     </form>
 

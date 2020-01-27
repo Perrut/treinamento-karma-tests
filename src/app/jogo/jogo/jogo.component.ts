@@ -4,7 +4,6 @@ import { Pergunta } from '../models/pergunta';
 import { Resposta } from '../models/resposta';
 import { JogoService } from '../services/jogo.service';
 import { EstadoResposta } from '../enums/estado-resposta';
-import { perguntas } from '../services/perguntas';
 import { Router } from '@angular/router';
 
 // tslint:disable: variable-name
@@ -26,28 +25,33 @@ export class JogoComponent implements OnInit {
   ngOnInit() {
     this.jogo = this._jogoService.jogo;
     this.perguntaAtual = this._jogoService.proximaPergunta();
-
-    console.log(perguntas);
   }
 
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
     this._jogoService.responder(pergunta, resposta).subscribe((respostaCorreta) => {
-      if (respostaCorreta) {
+      if (respostaCorreta.correta) {
         resposta.estadoResposta = EstadoResposta.CORRETA;
-        this.perguntaAtual = this._jogoService.proximaPergunta();
+        this.proximaPergunta();
       } else {
         resposta.estadoResposta = EstadoResposta.INCORRETA;
+        this.marcarRespostaCorreta(respostaCorreta.idCorreta);
       }
     });
   }
 
   proximaPergunta(): void {
-    const proxima = this._jogoService.proximaPergunta();
+    setTimeout(() => {
+      const proxima = this._jogoService.proximaPergunta();
 
-    if (proxima) {
-      this.perguntaAtual = proxima;
-    } else {
-      this._router.navigate([]);
-    }
+      if (proxima) {
+        this.perguntaAtual = proxima;
+      } else {
+        this._router.navigate([]);
+      }
+    }, 2000);
+  }
+
+  marcarRespostaCorreta(indiceCorreta: number): void {
+    this.perguntaAtual.respostas[indiceCorreta].estadoResposta = EstadoResposta.CORRETA;
   }
 }

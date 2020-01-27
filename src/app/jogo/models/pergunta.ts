@@ -8,7 +8,6 @@ export class Pergunta {
     private _pergunta: string;
     private _respostas: Resposta[];
     private _dificuldade: DificuldadePergunta;
-    private _valor: number;
 
     constructor(pergunta: string, respostas: Resposta[], dificuldade: DificuldadePergunta) {
         this._pergunta = pergunta;

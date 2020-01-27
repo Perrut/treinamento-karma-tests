@@ -25,15 +25,15 @@ export class JogoService {
     this._jogo = new Jogo(nomeJogador);
   }
 
-  responder(pergunta: Pergunta, resposta: Resposta): Observable<boolean> {
+  responder(pergunta: Pergunta, resposta: Resposta): Observable<{ correta: boolean, idCorreta: number }> {
     const perguntaASerRespondida = perguntas.find((p) => p.pergunta.id === pergunta.id);
 
     try {
       if (perguntaASerRespondida
         && perguntaASerRespondida.pergunta.respostas[perguntaASerRespondida.resposta].conteudo === resposta.conteudo) {
-        return of(true);
+        return of({ correta: true, idCorreta: perguntaASerRespondida.resposta });
       }
-      return of(false);
+      return of({ correta: false, idCorreta: perguntaASerRespondida.resposta });
     } catch (error) {
       // tslint:disable-next-line: deprecation
       Observable.throw(error);
