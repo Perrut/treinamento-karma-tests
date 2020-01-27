@@ -48,12 +48,11 @@ export class JogoComponent implements OnInit {
 
   proximaPergunta(): void {
     setTimeout(() => {
-      const proxima = this._jogoService.proximaPergunta();
-
-      if (proxima) {
+      try {
+        const proxima = this._jogoService.proximaPergunta();
         this.perguntaAtual = proxima;
-      } else {
-        this._router.navigate([]);
+      } catch {
+        this._router.navigate(['/']);
       }
     }, 2000);
   }

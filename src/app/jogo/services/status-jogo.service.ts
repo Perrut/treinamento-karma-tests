@@ -10,18 +10,21 @@ export class StatusJogoService {
 
   constructor(private _jogoService: JogoService) { }
 
-  atualizaStatus(status: {errar: string, parar: string, acertar: string}): void {
+  atualizaStatus(status: { errar: string, parar: string, acertar: string }): { errar: string, parar: string, acertar: string } {
     console.log('hey');
-    const proximaPergunta = this._jogoService.verificaProximaPergunta();
+    let { errar, parar, acertar } = status;
+    parar = '' + this._jogoService.jogo.pontos;
 
-    status.parar = '' + this._jogoService.jogo.pontos;
+    try {
+      const proximaPergunta = this._jogoService.verificaProximaPergunta();
 
-    if (proximaPergunta) {
-      status.errar = '' + (this._jogoService.jogo.pontos / 2);
-      status.acertar = '' + (this._jogoService.jogo.pontos + proximaPergunta.valor);
-    } else {
-      status.errar = '0';
-      status.acertar = '' + proximaPergunta.valor;
+      errar = '' + (this._jogoService.jogo.pontos / 2);
+      acertar = '' + (this._jogoService.jogo.pontos + proximaPergunta.valor);
+    } catch {
+      errar = '0';
+      acertar = '' + this._jogoService.getPerguntaAtual().valor;
     }
+
+    return { errar, parar, acertar };
   }
 }

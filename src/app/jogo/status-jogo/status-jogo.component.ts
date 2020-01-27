@@ -19,11 +19,16 @@ export class StatusJogoComponent implements OnInit {
     private _statusService: StatusJogoService) { }
 
   ngOnInit() {
-    this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
+    const novoEstado = this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
+    this.errar = novoEstado.errar;
+    this.parar = novoEstado.parar;
+    this.acertar = novoEstado.acertar;
   }
 
   atualizaStatus() {
-    this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
-    console.log({ errar: this.errar, parar: this.parar, acertar: this.acertar });
+    const novoEstado = this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
+    this.errar = novoEstado.errar;
+    this.parar = novoEstado.parar;
+    this.acertar = novoEstado.acertar;
   }
 }
