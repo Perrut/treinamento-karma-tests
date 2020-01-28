@@ -15,10 +15,10 @@ export class StatusJogoService {
     parar = '' + this._jogoService.jogo.pontos;
 
     try {
-      const proximaPergunta = this._jogoService.verificaProximaPergunta();
+      this._jogoService.verificaProximaPergunta();
 
       errar = '' + (this._jogoService.jogo.pontos / 2);
-      acertar = '' + (this._jogoService.jogo.pontos + proximaPergunta.valor);
+      acertar = '' + (this._jogoService.jogo.pontos + this._jogoService.getPerguntaAtual().valor);
     } catch {
       errar = '0';
       acertar = '' + this._jogoService.getPerguntaAtual().valor;

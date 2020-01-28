@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Jogo } from '../models/jogo';
 import { Pergunta } from '../models/pergunta';
 import { Resposta } from '../models/resposta';
 import { JogoService } from '../services/jogo.service';
@@ -25,7 +24,7 @@ export class JogoComponent implements OnInit {
     private _router: Router) { }
 
   ngOnInit() {
-    this.perguntaAtual = this._jogoService.proximaPergunta();
+    this.perguntaAtual = this._jogoService.getPerguntaAtual();
     console.log(perguntas);
   }
 
@@ -39,19 +38,17 @@ export class JogoComponent implements OnInit {
         resposta.estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
       }
-      this.statusComponent.atualizaStatus();
     });
   }
 
   proximaPergunta(): void {
-    setTimeout(() => {
-      try {
-        const proxima = this._jogoService.proximaPergunta();
-        this.perguntaAtual = proxima;
-      } catch {
-        this._router.navigate(['/']);
-      }
-    }, 2000);
+    const proxima = this._jogoService.proximaPergunta();
+    if (proxima) {
+      setTimeout(() => this.perguntaAtual = proxima, 2000);
+      this.statusComponent.atualizaStatus();
+    } else {
+      setTimeout(() => this._router.navigate(['/']), 2000);
+    }
   }
 
   marcarRespostaCorreta(indiceCorreta: number): void {

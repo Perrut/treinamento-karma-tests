@@ -4,6 +4,7 @@ import { Pergunta } from '../models/pergunta';
 import { Resposta } from '../models/resposta';
 import { Observable, of } from 'rxjs';
 import { perguntas } from './perguntas';
+import { EstadoResposta } from '../enums/estado-resposta';
 
 // tslint:disable: variable-name
 @Injectable({
@@ -23,6 +24,9 @@ export class JogoService {
 
   criarNovoJogo(nomeJogador: string): void {
     this._jogo = new Jogo(nomeJogador);
+    this._perguntaAtual = perguntas[0].pergunta;
+
+    perguntas.forEach(p => { p.pergunta.respostas.forEach(r => { r.estadoResposta = EstadoResposta.NAO_RESPONDIDA; }); });
   }
 
   responder(pergunta: Pergunta, resposta: Resposta): Observable<{ correta: boolean, idCorreta: number }> {
@@ -41,17 +45,18 @@ export class JogoService {
   }
 
   proximaPergunta(): Pergunta {
-    const proximaPergunta = perguntas[this._perguntaAtualIndex].pergunta;
-
-    if (proximaPergunta) {
+    try {
+      const proximaPergunta = perguntas[this._perguntaAtualIndex + 1].pergunta;
       this._perguntaAtualIndex += 1;
       this._perguntaAtual = proximaPergunta;
-    } else {
+
+      return proximaPergunta;
+    } catch {
       this._perguntaAtualIndex = 0;
       this._perguntaAtual = null;
-    }
 
-    return proximaPergunta ? proximaPergunta : null;
+      return null;
+    }
   }
 
   getPerguntaAtual(): Pergunta {

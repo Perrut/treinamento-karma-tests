@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { JogoService } from '../services/jogo.service';
 import { StatusJogoService } from '../services/status-jogo.service';
 
 // tslint:disable: variable-name
@@ -15,14 +14,10 @@ export class StatusJogoComponent implements OnInit {
   public acertar = '0';
 
   constructor(
-    private _jogoService: JogoService,
     private _statusService: StatusJogoService) { }
 
   ngOnInit() {
-    const novoEstado = this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
-    this.errar = novoEstado.errar;
-    this.parar = novoEstado.parar;
-    this.acertar = novoEstado.acertar;
+    this.atualizaStatus();
   }
 
   atualizaStatus() {
