@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TelaApresentacaoModule } from './tela-apresentacao/tela-apresentacao.module';
 import { JogoModule } from './jogo/jogo.module';
+import { TelaPontuacaoModule } from './tela-pontuacao/tela-pontuacao.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { JogoModule } from './jogo/jogo.module';
     BrowserModule,
     AppRoutingModule,
     JogoModule,
-    TelaApresentacaoModule
+    TelaApresentacaoModule,
+    TelaPontuacaoModule
   ],
   providers: [],
   bootstrap: [AppComponent]
