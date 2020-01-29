@@ -47,7 +47,7 @@ export class JogoComponent implements OnInit {
       setTimeout(() => this.perguntaAtual = proxima, 2000);
       this.statusComponent.atualizaStatus();
     } else {
-      setTimeout(() => this._router.navigate(['/']), 2000);
+      setTimeout(() => this._router.navigate(['/pontuacao']), 2000);
     }
   }
 
