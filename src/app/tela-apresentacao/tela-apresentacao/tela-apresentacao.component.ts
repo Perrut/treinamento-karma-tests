@@ -21,7 +21,11 @@ export class TelaApresentacaoComponent implements OnInit {
   iniciarJogo(): void {
     const jogoRoute = 'jogo';
 
-    this.jogoService.criarNovoJogo(this.nomeJogador);
-    this.router.navigate([jogoRoute]);
+    this.jogoService.criarNovoJogo(this.nomeJogador).subscribe(
+      (jogo) => {
+        if (jogo) {
+          this.router.navigate([jogoRoute]);
+        }
+      });
   }
 }

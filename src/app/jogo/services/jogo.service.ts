@@ -5,6 +5,8 @@ import { Resposta } from '../models/resposta';
 import { Observable, of } from 'rxjs';
 import { perguntas } from './perguntas';
 import { EstadoResposta } from '../enums/estado-resposta';
+import { JogoApiService } from './jogo-api.service';
+import { map } from 'rxjs/operators';
 
 // tslint:disable: variable-name
 @Injectable({
@@ -16,17 +18,28 @@ export class JogoService {
   private _perguntaAtualIndex = 0;
   private _perguntaAtual: Pergunta;
 
-  constructor() { }
+  constructor(private api: JogoApiService) { }
 
   get jogo(): Jogo {
     return this._jogo;
   }
 
-  criarNovoJogo(nomeJogador: string): void {
+  criarNovoJogo(nomeJogador: string): Observable<Jogo> {
     this._jogo = new Jogo(nomeJogador);
-    this._perguntaAtual = perguntas[0].pergunta;
 
-    perguntas.forEach(p => { p.pergunta.respostas.forEach(r => { r.estadoResposta = EstadoResposta.NAO_RESPONDIDA; }); });
+    return this.api.criarJogo(this.jogo).pipe(
+      map((jogo) => {
+        if (jogo) {
+          this._jogo = jogo;
+          this._perguntaAtual = perguntas[0].pergunta;
+
+          perguntas.forEach(p => { p.pergunta.respostas.forEach(r => { r.estadoResposta = EstadoResposta.NAO_RESPONDIDA; }); });
+
+          return this.jogo;
+        } else {
+          return null;
+        }
+      }));
   }
 
   responder(pergunta: Pergunta, resposta: Resposta): Observable<{ correta: boolean, idCorreta: number }> {
@@ -68,6 +81,6 @@ export class JogoService {
   }
 
   atualizaPontuacao() {
-    this._jogo.pontos += this._perguntaAtual.valor;
+    this._jogo._score += this._perguntaAtual.valor;
   }
 }
