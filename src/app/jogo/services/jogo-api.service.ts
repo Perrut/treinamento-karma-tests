@@ -21,4 +21,13 @@ export class JogoApiService {
       map((game) => (game as Jogo))
     );
   }
+
+  atualizarJogo(jogo: Jogo): Observable<Jogo> {
+    return this.http.put<Jogo>(`${this.apiUrl}/games/${jogo.id}`, { game: jogo }).pipe(
+      catchError((_) => {
+        return null;
+      }),
+      map((game) => (game as Jogo))
+    );
+  }
 }

@@ -5,7 +5,6 @@ import { JogoService } from '../services/jogo.service';
 import { EstadoResposta } from '../enums/estado-resposta';
 import { Router } from '@angular/router';
 import { StatusJogoComponent } from '../status-jogo/status-jogo.component';
-import { perguntas } from '../services/perguntas';
 
 // tslint:disable: variable-name
 @Component({
@@ -25,7 +24,6 @@ export class JogoComponent implements OnInit {
 
   ngOnInit() {
     this.perguntaAtual = this._jogoService.getPerguntaAtual();
-    console.log(perguntas);
   }
 
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
@@ -37,6 +35,7 @@ export class JogoComponent implements OnInit {
       } else {
         resposta.estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
+        this._router.navigate(['/pontuacao']);
       }
     });
   }
@@ -44,8 +43,10 @@ export class JogoComponent implements OnInit {
   proximaPergunta(): void {
     const proxima = this._jogoService.proximaPergunta();
     if (proxima) {
-      setTimeout(() => this.perguntaAtual = proxima, 2000);
-      this.statusComponent.atualizaStatus();
+      setTimeout(() => {
+        this.statusComponent.atualizaStatus();
+        this.perguntaAtual = proxima;
+      }, 2000);
     } else {
       setTimeout(() => this._router.navigate(['/pontuacao']), 2000);
     }
