@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Jogo } from '../models/jogo';
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { Pergunta } from '../models/pergunta';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,12 @@ export class JogoApiService {
 
   constructor(private http: HttpClient) { }
 
-  criarJogo(jogo: Jogo): Observable<Jogo> {
-    return this.http.post<Jogo>(`${this.apiUrl}/games`, { game: jogo }).pipe(
+  criarJogo(jogo: Jogo): Observable<{ game: Jogo, questions: Pergunta[] }> {
+    return this.http.post<{ game: Jogo, questions: Pergunta[] }>(`${this.apiUrl}/games`, { game: jogo }).pipe(
       catchError((_) => {
         return null;
       }),
-      map((game) => (game as Jogo))
+      map((response: any) => ({ game: response.game as Jogo, questions: response.questions as Pergunta[] }))
     );
   }
 

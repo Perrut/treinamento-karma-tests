@@ -1,10 +1,10 @@
 <div class="tela">
-    <h2>{{perguntaAtual.pergunta}}</h2>
+    <h2>{{perguntaAtual._question}}</h2>
 
     <form>
         <ul>
-            <li *ngFor="let r of perguntaAtual.respostas" (click)="enviarResposta(perguntaAtual, r)">
-                <p [appValidaResposta]="r.estadoResposta">{{r.conteudo}}</p>
+            <li *ngFor="let r of perguntaAtual.answers" (click)="enviarResposta(perguntaAtual, r)">
+                <p [appValidaResposta]="r.estadoResposta">{{r._content}}</p>
             </li>
         </ul>
     </form>

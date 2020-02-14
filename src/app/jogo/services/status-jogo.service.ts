@@ -17,12 +17,11 @@ export class StatusJogoService {
       this._jogoService.verificaProximaPergunta();
 
       errar = '' + (this._jogoService.jogo._score / 2);
-      acertar = '' + (this._jogoService.jogo._score + this._jogoService.getPerguntaAtual().valor);
+      acertar = '' + (this._jogoService.jogo._score + this._jogoService.getValorPergunta(this._jogoService.getPerguntaAtual()));
     } catch {
       errar = '0';
-      acertar = '' + this._jogoService.getPerguntaAtual().valor;
+      acertar = '' + this._jogoService.getValorPergunta(this._jogoService.getPerguntaAtual());
     }
-
     return { errar, parar, acertar };
   }
 }

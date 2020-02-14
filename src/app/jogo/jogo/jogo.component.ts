@@ -53,6 +53,6 @@ export class JogoComponent implements OnInit {
   }
 
   marcarRespostaCorreta(indiceCorreta: number): void {
-    this.perguntaAtual.respostas[indiceCorreta].estadoResposta = EstadoResposta.CORRETA;
+    this.perguntaAtual.answers[indiceCorreta].estadoResposta = EstadoResposta.CORRETA;
   }
 }
