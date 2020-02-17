@@ -22,19 +22,23 @@ export class JogoComponent implements OnInit {
     private _router: Router) { }
 
   ngOnInit() {
+    if (!this._jogoService.jogo) {
+      this._router.navigate(['/']);
+    }
+
     this.perguntaAtual = this._jogoService.getPerguntaAtual();
   }
 
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
-    this._jogoService.responder(pergunta, resposta).subscribe((respostaCorreta) => {
+    this._jogoService.responder(pergunta.id, resposta.id).subscribe((respostaCorreta) => {
       if (respostaCorreta.correta) {
-        resposta.estadoResposta = EstadoResposta.CORRETA;
+        resposta._estadoResposta = EstadoResposta.CORRETA;
         this._jogoService.atualizaPontuacao();
         this.proximaPergunta();
       } else {
-        resposta.estadoResposta = EstadoResposta.INCORRETA;
+        resposta._estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
-        this._router.navigate(['/pontuacao']);
+        setTimeout(() => this._router.navigate(['/pontuacao']), 2000);
       }
     });
   }
@@ -52,6 +56,10 @@ export class JogoComponent implements OnInit {
   }
 
   marcarRespostaCorreta(indiceCorreta: number): void {
-    this.perguntaAtual.answers[indiceCorreta].estadoResposta = EstadoResposta.CORRETA;
+    const correctAnswer = this.perguntaAtual.answers.find(
+      (resposta) => {
+        return resposta.id === indiceCorreta;
+      });
+    correctAnswer._estadoResposta = EstadoResposta.CORRETA;
   }
 }

@@ -1,13 +1,15 @@
-<div class="tela">
-    <h2>{{perguntaAtual._question}}</h2>
+<ng-container *ngIf="perguntaAtual">
+    <div class="tela">
+        <h2>{{perguntaAtual._question}}</h2>
 
-    <form>
-        <ul>
-            <li *ngFor="let r of perguntaAtual.answers" (click)="enviarResposta(perguntaAtual, r)">
-                <p [appValidaResposta]="r.estadoResposta">{{r._content}}</p>
-            </li>
-        </ul>
-    </form>
+        <form>
+            <ul>
+                <li *ngFor="let r of perguntaAtual.answers" (click)="enviarResposta(perguntaAtual, r)">
+                    <p [appValidaResposta]="r._estadoResposta">{{r._content}}</p>
+                </li>
+            </ul>
+        </form>
 
-    <app-status-jogo></app-status-jogo>
-</div>
+        <app-status-jogo></app-status-jogo>
+    </div>
+</ng-container>

@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Jogo } from '../models/jogo';
 import { Pergunta } from '../models/pergunta';
-import { Resposta } from '../models/resposta';
-import { Observable, of } from 'rxjs';
-import { perguntas } from './perguntas';
+import { Observable } from 'rxjs';
 import { JogoApiService } from './jogo-api.service';
 import { map } from 'rxjs/operators';
 import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
@@ -16,6 +14,7 @@ export class JogoService {
   private _jogo: Jogo;
   private _perguntaAtualIndex = 0;
   private _perguntaAtual: Pergunta;
+  private _perguntas: Pergunta[] = [];
 
   constructor(private api: JogoApiService) { }
 
@@ -30,7 +29,8 @@ export class JogoService {
       map((jogo) => {
         if (jogo) {
           this._jogo = jogo.game;
-          this._perguntaAtual = jogo.questions[0];
+          this._perguntas = jogo.questions;
+          this._perguntaAtual = this._perguntas[0];
 
           return this._jogo;
         } else {
@@ -39,24 +39,21 @@ export class JogoService {
       }));
   }
 
-  responder(pergunta: Pergunta, resposta: Resposta): Observable<{ correta: boolean, idCorreta: number }> {
-    const perguntaASerRespondida = perguntas.find((p) => p.pergunta.id === pergunta.id);
-
-    try {
-      if (perguntaASerRespondida
-        && perguntaASerRespondida.pergunta.answers[perguntaASerRespondida.resposta].conteudo === resposta.conteudo) {
-        return of({ correta: true, idCorreta: perguntaASerRespondida.resposta });
-      }
-      return of({ correta: false, idCorreta: perguntaASerRespondida.resposta });
-    } catch (error) {
-      // tslint:disable-next-line: deprecation
-      Observable.throw(error);
-    }
+  responder(pergunta_id: string, resposta_id: number): Observable<{ correta: boolean, idCorreta: number }> {
+    return this.api.responderPergunta(pergunta_id, resposta_id).pipe(
+      map((correct) => {
+        if (correct) {
+          return correct;
+        } else {
+          return null;
+        }
+      })
+    );
   }
 
   proximaPergunta(): Pergunta {
     try {
-      const proximaPergunta = perguntas[this._perguntaAtualIndex + 1].pergunta;
+      const proximaPergunta = this._perguntas[this._perguntaAtualIndex + 1];
       this._perguntaAtualIndex += 1;
       this._perguntaAtual = proximaPergunta;
 
@@ -74,7 +71,7 @@ export class JogoService {
   }
 
   verificaProximaPergunta(): Pergunta {
-    return perguntas[this._perguntaAtualIndex + 1].pergunta;
+    return this._perguntas[this._perguntaAtualIndex + 1];
   }
 
   atualizaPontuacao() {
