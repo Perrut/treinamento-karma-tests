@@ -1,6 +1,5 @@
 import { EstadoResposta } from '../enums/estado-resposta';
 
-// tslint:disable: variable-name
 export class Resposta {
     // TODO: remover id dinâmico, obter do backend
     private _id: string = Math.floor(Math.random() * 4) as unknown as string;

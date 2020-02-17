@@ -1,7 +1,6 @@
 import { Directive, ElementRef, Input, OnChanges, HostListener } from '@angular/core';
 import { EstadoResposta } from '../enums/estado-resposta';
 
-// tslint:disable: variable-name
 @Directive({
   selector: '[appValidaResposta]'
 })

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StatusJogoService } from '../services/status-jogo.service';
 
-// tslint:disable: variable-name
 @Component({
   selector: 'app-status-jogo',
   templateUrl: './status-jogo.component.html',

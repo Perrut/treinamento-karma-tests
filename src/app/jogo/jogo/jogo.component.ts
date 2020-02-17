@@ -6,7 +6,6 @@ import { EstadoResposta } from '../enums/estado-resposta';
 import { Router } from '@angular/router';
 import { StatusJogoComponent } from '../status-jogo/status-jogo.component';
 
-// tslint:disable: variable-name
 @Component({
   selector: 'app-jogo',
   templateUrl: './jogo.component.html',

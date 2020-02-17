@@ -1,6 +1,5 @@
 import { Pergunta } from './pergunta';
 
-// tslint:disable: variable-name
 export class Jogo {
     public id: string;
     public _player_name: string;

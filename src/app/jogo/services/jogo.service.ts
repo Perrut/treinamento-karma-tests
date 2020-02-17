@@ -8,7 +8,6 @@ import { JogoApiService } from './jogo-api.service';
 import { map } from 'rxjs/operators';
 import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
 
-// tslint:disable: variable-name
 @Injectable({
   providedIn: 'root'
 })
