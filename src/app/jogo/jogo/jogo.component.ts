@@ -33,12 +33,12 @@ export class JogoComponent implements OnInit {
     this._jogoService.responder(pergunta.id, resposta.id).subscribe((respostaCorreta) => {
       if (respostaCorreta.correta) {
         resposta._estadoResposta = EstadoResposta.CORRETA;
-        this._jogoService.atualizaPontuacao();
+        this._jogoService.atualizaEstado();
         this.proximaPergunta();
       } else {
         resposta._estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
-        setTimeout(() => this._router.navigate(['/pontuacao']), 2000);
+        this._jogoService.encerrarJogo();
       }
     });
   }
@@ -51,7 +51,7 @@ export class JogoComponent implements OnInit {
         this.perguntaAtual = proxima;
       }, 2000);
     } else {
-      setTimeout(() => this._router.navigate(['/pontuacao']), 2000);
+      this._jogoService.encerrarJogo();
     }
   }
 

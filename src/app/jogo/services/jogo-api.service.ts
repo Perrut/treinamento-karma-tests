@@ -26,8 +26,7 @@ export class JogoApiService {
     return this.http.put<Jogo>(`${this.apiUrl}/games/${jogo.id}`, { game: jogo }).pipe(
       catchError((_) => {
         return of(null);
-      }),
-      map((game) => (game as Jogo))
+      })
     );
   }
 

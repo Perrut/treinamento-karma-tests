@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { JogoApiService } from './jogo-api.service';
 import { map } from 'rxjs/operators';
 import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,9 @@ export class JogoService {
   private _perguntaAtual: Pergunta;
   private _perguntas: Pergunta[] = [];
 
-  constructor(private api: JogoApiService) { }
+  constructor(
+    private api: JogoApiService,
+    private router: Router) { }
 
   get jogo(): Jogo {
     return this._jogo;
@@ -74,11 +77,20 @@ export class JogoService {
     return this._perguntas[this._perguntaAtualIndex + 1];
   }
 
-  atualizaPontuacao() {
+  atualizaEstado(): void {
     this._jogo._score += this.getValorPergunta(this._perguntaAtual);
+    this._jogo._questions.push(this._perguntaAtual);
   }
 
-  public getValorPergunta(pergunta: Pergunta): number {
+  encerrarJogo(): void {
+    this.api.atualizarJogo(this._jogo).subscribe(
+      _ => {
+        this.router.navigate(['/pontuacao']);
+      }
+    );
+  }
+
+  getValorPergunta(pergunta: Pergunta): number {
     switch (pergunta._level) {
       case DificuldadePergunta.FACIL:
         return 1000;
