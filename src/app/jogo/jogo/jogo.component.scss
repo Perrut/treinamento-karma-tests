@@ -6,4 +6,10 @@
 
 app-status-jogo, form {
     margin-top: 1rem;
+
+    ul {
+        max-width: 80%;
+        display: block;
+        margin: 0 auto;
+    }
 }

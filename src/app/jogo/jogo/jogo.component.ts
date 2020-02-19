@@ -18,40 +18,44 @@ export class JogoComponent implements OnInit {
   @ViewChild(StatusJogoComponent, { static: false }) statusComponent: StatusJogoComponent;
 
   constructor(
-    private _jogoService: JogoService,
-    private _router: Router) { }
+    private jogoService: JogoService,
+    private router: Router) { }
 
   ngOnInit() {
-    if (!this._jogoService.jogo) {
-      this._router.navigate(['/']);
-    }
+    this.inicializarJogo();
+  }
 
-    this.perguntaAtual = this._jogoService.getPerguntaAtual();
+  inicializarJogo(): void {
+    if (!this.jogoService.getJogo()) {
+      this.router.navigate(['/']);
+    }
+    this.perguntaAtual = this.jogoService.getPerguntaAtual();
   }
 
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
-    this._jogoService.responder(pergunta.id, resposta.id).subscribe((respostaCorreta) => {
+    this.jogoService.responder(pergunta.id, resposta.id).subscribe((respostaCorreta) => {
       if (respostaCorreta.correta) {
-        resposta._estadoResposta = EstadoResposta.CORRETA;
-        this._jogoService.atualizaEstado();
+        resposta.estadoResposta = EstadoResposta.CORRETA;
+        this.jogoService.atualizaEstado();
         this.proximaPergunta();
       } else {
-        resposta._estadoResposta = EstadoResposta.INCORRETA;
+        resposta.estadoResposta = EstadoResposta.INCORRETA;
         this.marcarRespostaCorreta(respostaCorreta.idCorreta);
-        this._jogoService.encerrarJogo();
+        this.jogoService.getJogo().score = +this.statusComponent.errar;
+        this.jogoService.encerrarJogo();
       }
     });
   }
 
   proximaPergunta(): void {
-    const proxima = this._jogoService.proximaPergunta();
+    const proxima = this.jogoService.proximaPergunta();
     if (proxima) {
       setTimeout(() => {
         this.statusComponent.atualizaStatus();
         this.perguntaAtual = proxima;
       }, 2000);
     } else {
-      this._jogoService.encerrarJogo();
+      this.jogoService.encerrarJogo();
     }
   }
 
@@ -60,6 +64,6 @@ export class JogoComponent implements OnInit {
       (resposta) => {
         return resposta.id === indiceCorreta;
       });
-    correctAnswer._estadoResposta = EstadoResposta.CORRETA;
+    correctAnswer.estadoResposta = EstadoResposta.CORRETA;
   }
 }

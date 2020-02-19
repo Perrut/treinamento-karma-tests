@@ -1,9 +1,9 @@
 <div class="tela">
     <h2>Bem vindo ao jogo de perguntas e respostas!</h2>
 
-    <form>
+    <form (submit)="iniciarJogo()">
         <p>Digite seu nome:</p>
         <input type="text" name="nomeJogador" [(ngModel)]="nomeJogador">
-        <button type="button" (click)="iniciarJogo()">Começar</button>
+        <button type="submit">Começar</button>
     </form>
 </div>

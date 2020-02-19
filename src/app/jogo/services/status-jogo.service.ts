@@ -6,20 +6,20 @@ import { JogoService } from './jogo.service';
 })
 export class StatusJogoService {
 
-  constructor(private _jogoService: JogoService) { }
+  constructor(private jogoService: JogoService) { }
 
   atualizaStatus(status: { errar: string, parar: string, acertar: string }): { errar: string, parar: string, acertar: string } {
     let { errar, parar, acertar } = status;
-    parar = '' + this._jogoService.jogo._score;
+    parar = '' + this.jogoService.getJogo().score;
 
     try {
-      this._jogoService.verificaProximaPergunta();
+      this.jogoService.verificaProximaPergunta();
 
-      errar = '' + (this._jogoService.jogo._score / 2);
-      acertar = '' + (this._jogoService.jogo._score + this._jogoService.getValorPergunta(this._jogoService.getPerguntaAtual()));
+      errar = '' + (this.jogoService.getJogo().score / 2);
+      acertar = '' + (this.jogoService.getJogo().score + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual()));
     } catch {
       errar = '0';
-      acertar = '' + this._jogoService.getValorPergunta(this._jogoService.getPerguntaAtual());
+      acertar = '' + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual());
     }
     return { errar, parar, acertar };
   }

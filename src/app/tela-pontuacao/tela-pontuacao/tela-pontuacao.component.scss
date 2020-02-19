@@ -3,3 +3,20 @@
     justify-content: center;
     flex-direction: column;
 }
+
+p {
+    margin-bottom: 1rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    max-width: 18rem;
+    min-width: 8rem;
+    width: inherit;
+
+    button {
+        height: 1rem;
+        font-weight: bold;
+    }
+}

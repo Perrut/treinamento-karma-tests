@@ -13,14 +13,14 @@ export class StatusJogoComponent implements OnInit {
   public acertar = '0';
 
   constructor(
-    private _statusService: StatusJogoService) { }
+    private statusService: StatusJogoService) { }
 
   ngOnInit() {
     this.atualizaStatus();
   }
 
   atualizaStatus() {
-    const novoEstado = this._statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
+    const novoEstado = this.statusService.atualizaStatus({ errar: this.errar, parar: this.parar, acertar: this.acertar });
     this.errar = novoEstado.errar;
     this.parar = novoEstado.parar;
     this.acertar = novoEstado.acertar;

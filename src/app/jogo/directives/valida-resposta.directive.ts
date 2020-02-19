@@ -21,7 +21,7 @@ export class ValidaRespostaDirective implements OnChanges {
     this.el.nativeElement.style.cursor = 'pointer';
   }
 
-  colorirResposta(): void {
+  private colorirResposta(): void {
     const corCorreta = 'green';
     const corIncorreta = 'red';
 

@@ -12,30 +12,30 @@ import { Router } from '@angular/router';
 })
 export class JogoService {
 
-  private _jogo: Jogo;
-  private _perguntaAtualIndex = 0;
-  private _perguntaAtual: Pergunta;
-  private _perguntas: Pergunta[] = [];
+  private jogo: Jogo;
+  private perguntaAtualIndex = 0;
+  private perguntaAtual: Pergunta;
+  private perguntas: Pergunta[] = [];
 
   constructor(
     private api: JogoApiService,
     private router: Router) { }
 
-  get jogo(): Jogo {
-    return this._jogo;
+  getJogo(): Jogo {
+    return this.jogo;
   }
 
   criarNovoJogo(nomeJogador: string): Observable<Jogo> {
-    this._jogo = new Jogo(nomeJogador);
+    this.jogo = new Jogo(nomeJogador);
 
     return this.api.criarJogo(this.jogo).pipe(
       map((jogo) => {
         if (jogo) {
-          this._jogo = jogo.game;
-          this._perguntas = jogo.questions;
-          this._perguntaAtual = this._perguntas[0];
+          this.jogo = jogo.game;
+          this.perguntas = jogo.questions;
+          this.perguntaAtual = this.perguntas[0];
 
-          return this._jogo;
+          return this.jogo;
         } else {
           return null;
         }
@@ -56,42 +56,42 @@ export class JogoService {
 
   proximaPergunta(): Pergunta {
     try {
-      const proximaPergunta = this._perguntas[this._perguntaAtualIndex + 1];
-      this._perguntaAtualIndex += 1;
-      this._perguntaAtual = proximaPergunta;
+      const proximaPergunta = this.perguntas[this.perguntaAtualIndex + 1];
+      this.perguntaAtualIndex += 1;
+      this.perguntaAtual = proximaPergunta;
 
       return proximaPergunta;
     } catch {
-      this._perguntaAtualIndex = 0;
-      this._perguntaAtual = null;
+      this.perguntaAtualIndex = 0;
+      this.perguntaAtual = null;
 
       return null;
     }
   }
 
   getPerguntaAtual(): Pergunta {
-    return this._perguntaAtual;
+    return this.perguntaAtual;
   }
 
   verificaProximaPergunta(): Pergunta {
-    return this._perguntas[this._perguntaAtualIndex + 1];
+    return this.perguntas[this.perguntaAtualIndex + 1];
   }
 
   atualizaEstado(): void {
-    this._jogo._score += this.getValorPergunta(this._perguntaAtual);
-    this._jogo._questions.push(this._perguntaAtual);
+    this.jogo.score += this.getValorPergunta(this.perguntaAtual);
+    this.jogo.questions.push(this.perguntaAtual);
   }
 
   encerrarJogo(): void {
-    this.api.atualizarJogo(this._jogo).subscribe(
+    this.api.atualizarJogo(this.jogo).subscribe(
       _ => {
-        this.router.navigate(['/pontuacao']);
+        setTimeout(() => this.router.navigate(['/pontuacao']), 2000);
       }
     );
   }
 
   getValorPergunta(pergunta: Pergunta): number {
-    switch (pergunta._level) {
+    switch (pergunta.level) {
       case DificuldadePergunta.FACIL:
         return 1000;
       case DificuldadePergunta.MEDIO:

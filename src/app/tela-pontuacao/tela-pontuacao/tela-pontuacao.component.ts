@@ -16,10 +16,10 @@ export class TelaPontuacaoComponent implements OnInit {
     private jogoService: JogoService) { }
 
   ngOnInit() {
-    if (!this.jogoService.jogo) {
+    if (!this.jogoService.getJogo()) {
       this.router.navigate(['/']);
     } else {
-      this.pontuacao = this.jogoService.jogo._score;
+      this.pontuacao = this.jogoService.getJogo().score;
     }
   }
 

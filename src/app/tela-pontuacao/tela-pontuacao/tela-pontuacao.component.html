@@ -5,5 +5,7 @@
         {{pontuacao}} pontos.
     </p>
 
-    <button (click)="comecarNovoJogo()">Começar novo jogo</button>
+    <form (submit)="comecarNovoJogo()">
+        <button>Começar novo jogo</button>
+    </form>
 </div>
