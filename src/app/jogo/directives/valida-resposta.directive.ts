@@ -1,12 +1,18 @@
 import { Directive, ElementRef, Input, OnChanges, HostListener } from '@angular/core';
 import { EstadoResposta } from '../enums/estado-resposta';
 
+/**
+ * Diretiva responsável por colorir as respostas com base em seu estado (CORRETA/INCORRETA)
+ */
 @Directive({
   selector: '[appValidaResposta]'
 })
 export class ValidaRespostaDirective implements OnChanges {
 
-  @Input('appValidaResposta') resposta: number;
+  /**
+   * Estado da resposta à ser estilizada
+   */
+  @Input('appValidaResposta') resposta: EstadoResposta;
 
   constructor(
     public el: ElementRef) {
@@ -16,11 +22,17 @@ export class ValidaRespostaDirective implements OnChanges {
     this.colorirResposta();
   }
 
+  /**
+   * Altera o estado do cursor do mouse ao se passar por cima de uma resposta
+   */
   @HostListener('mouseover')
   changeCursor(): void {
     this.el.nativeElement.style.cursor = 'pointer';
   }
 
+  /**
+   * Colore o background da resposta com base em seu estado
+   */
   private colorirResposta(): void {
     const corCorreta = 'green';
     const corIncorreta = 'red';
