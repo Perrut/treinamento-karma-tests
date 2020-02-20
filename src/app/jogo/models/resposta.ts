@@ -1,5 +1,8 @@
 import { EstadoResposta } from '../enums/estado-resposta';
 
+/**
+ * Resposta à uma pergunta do jogo
+ */
 export class Resposta {
     public id: number;
     public content: string;

@@ -1,5 +1,9 @@
 import { Pergunta } from './pergunta';
 
+/**
+ * Representa o Jogo com perguntas respondidas,
+ * nome do jogador e pontos conquistados
+ */
 export class Jogo {
     public id: string;
     public player_name: string;
