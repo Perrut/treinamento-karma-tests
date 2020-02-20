@@ -22,11 +22,7 @@ export class TelaPontuacaoComponent implements OnInit {
     private jogoService: JogoService) { }
 
   ngOnInit() {
-    if (!this.jogoService.getJogo()) {
-      this.router.navigate(['/']);
-    } else {
-      this.pontuacao = this.jogoService.getJogo().score;
-    }
+    this.verificarJogoExistente();
   }
 
   /**
@@ -34,5 +30,16 @@ export class TelaPontuacaoComponent implements OnInit {
    */
   comecarNovoJogo(): void {
     this.router.navigate(['/']);
+  }
+
+  /**
+   * Redireciona para a tela de início caso não exista um jogo acontecendo
+   */
+  private verificarJogoExistente(): void {
+    if (!this.jogoService.getJogo()) {
+      this.router.navigate(['/']);
+    } else {
+      this.pontuacao = this.jogoService.getJogo().score;
+    }
   }
 }

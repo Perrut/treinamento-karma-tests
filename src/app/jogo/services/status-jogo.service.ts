@@ -19,12 +19,10 @@ export class StatusJogoService {
     let { errar, parar, acertar } = status;
     parar = '' + this.jogoService.getJogo().score;
 
-    try {
-      this.jogoService.verificaProximaPergunta();
-
+    if (this.jogoService.verificaProximaPergunta()) {
       errar = '' + (this.jogoService.getJogo().score / 2);
       acertar = '' + (this.jogoService.getJogo().score + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual()));
-    } catch {
+    } else {
       errar = '0';
       acertar = '' + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual());
     }

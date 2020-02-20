@@ -52,15 +52,11 @@ export class JogoService {
 
     return this.api.criarJogo(this.jogo).pipe(
       map((jogo) => {
-        if (jogo) {
-          this.jogo = jogo.game;
-          this.perguntas = jogo.questions;
-          this.perguntaAtual = this.perguntas[0];
+        this.jogo = jogo.game;
+        this.perguntas = jogo.questions;
+        this.perguntaAtual = this.perguntas[0];
 
-          return this.jogo;
-        } else {
-          return null;
-        }
+        return this.jogo;
       }));
   }
 
@@ -70,28 +66,20 @@ export class JogoService {
    * @param resposta_id id da resposta
    */
   responder(pergunta_id: string, resposta_id: number): Observable<{ correta: boolean, idCorreta: number }> {
-    return this.api.responderPergunta(pergunta_id, resposta_id).pipe(
-      map((correct) => {
-        if (correct) {
-          return correct;
-        } else {
-          return null;
-        }
-      })
-    );
+    return this.api.responderPergunta(pergunta_id, resposta_id);
   }
 
   /**
    * Avança para a próxima pergunta do jogo, se houver
    */
   proximaPergunta(): Pergunta {
-    try {
+    if (this.verificaProximaPergunta()) {
       const proximaPergunta = this.perguntas[this.perguntaAtualIndex + 1];
       this.perguntaAtualIndex += 1;
       this.perguntaAtual = proximaPergunta;
 
       return proximaPergunta;
-    } catch {
+    } else {
       this.perguntaAtualIndex = 0;
       this.perguntaAtual = null;
 
