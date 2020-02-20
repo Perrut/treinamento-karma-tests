@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JogoService } from 'src/app/jogo/services/jogo.service';
 
+/**
+ * Exibe a pontuação final do jogador
+ */
 @Component({
   selector: 'app-tela-pontuacao',
   templateUrl: './tela-pontuacao.component.html',
@@ -9,6 +12,9 @@ import { JogoService } from 'src/app/jogo/services/jogo.service';
 })
 export class TelaPontuacaoComponent implements OnInit {
 
+  /**
+   * Pontuação do jogador
+   */
   public pontuacao = 0;
 
   constructor(
@@ -23,6 +29,9 @@ export class TelaPontuacaoComponent implements OnInit {
     }
   }
 
+  /**
+   * Redireciona para a tela de apresentação
+   */
   comecarNovoJogo(): void {
     this.router.navigate(['/']);
   }

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JogoService } from 'src/app/jogo/services/jogo.service';
 
+/**
+ * Tela inicial da aplicação
+ */
 @Component({
   selector: 'app-tela-apresentacao',
   templateUrl: './tela-apresentacao.component.html',
@@ -9,6 +12,9 @@ import { JogoService } from 'src/app/jogo/services/jogo.service';
 })
 export class TelaApresentacaoComponent implements OnInit {
 
+  /**
+   * Nome do jogador
+   */
   nomeJogador = '';
 
   constructor(
@@ -18,6 +24,9 @@ export class TelaApresentacaoComponent implements OnInit {
   ngOnInit() {
   }
 
+  /**
+   * Cria uma nova partida
+   */
   iniciarJogo(): void {
     const jogoRoute = 'jogo';
 
