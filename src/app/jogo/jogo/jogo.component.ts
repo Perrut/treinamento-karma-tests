@@ -50,7 +50,7 @@ export class JogoComponent implements OnInit {
         } else {
           resposta.estadoResposta = EstadoResposta.INCORRETA;
           this.marcarRespostaCorreta(respostaEnviada.idCorreta);
-          this.jogoService.getJogo().score = +this.statusComponent.errar;
+          this.jogoService.getJogo().score = Number(this.statusComponent.errar);
           this.jogoService.encerrarJogo();
         }
       }

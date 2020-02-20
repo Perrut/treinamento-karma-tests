@@ -17,14 +17,14 @@ export class StatusJogoService {
    */
   atualizaStatus(status: { errar: string, parar: string, acertar: string }): { errar: string, parar: string, acertar: string } {
     let { errar, parar, acertar } = status;
-    parar = '' + this.jogoService.getJogo().score;
+    parar = String(this.jogoService.getJogo().score);
 
     if (this.jogoService.verificaProximaPergunta()) {
-      errar = '' + (this.jogoService.getJogo().score / 2);
-      acertar = '' + (this.jogoService.getJogo().score + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual()));
+      errar = String((this.jogoService.getJogo().score / 2));
+      acertar = String((this.jogoService.getJogo().score + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual())));
     } else {
       errar = '0';
-      acertar = '' + this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual());
+      acertar = String(this.jogoService.getValorPergunta(this.jogoService.getPerguntaAtual()));
     }
     return { errar, parar, acertar };
   }
