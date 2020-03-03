@@ -14,15 +14,15 @@ export class StatusJogoComponent implements OnInit {
   /**
    * Pontuação ao se errar a pergunta
    */
-  public errar = '0';
+  private errar = '0';
   /**
    * Pontuação ao se parar a partida
    */
-  public parar = '0';
+  private parar = '0';
   /**
    * Pontuação ao se acertar a pergunta
    */
-  public acertar = '0';
+  private acertar = '0';
 
   constructor(
     private statusService: StatusJogoService) { }
@@ -39,5 +39,24 @@ export class StatusJogoComponent implements OnInit {
     this.errar = novoEstado.errar;
     this.parar = novoEstado.parar;
     this.acertar = novoEstado.acertar;
+  }
+
+  /**
+   * Pontuação ao se errar a pergunta
+   */
+  public get pontosErrar(): string {
+    return this.errar;
+  }
+  /**
+   * Pontuação ao se parar a partida
+   */
+  public get pontosParar(): string {
+    return this.parar;
+  }
+  /**
+   * Pontuação ao se acertar a pergunta
+   */
+  public get pontosAcertar(): string {
+    return this.acertar;
   }
 }

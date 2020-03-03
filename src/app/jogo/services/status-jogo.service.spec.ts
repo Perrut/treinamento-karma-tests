@@ -6,7 +6,7 @@ import { Jogo } from '../models/jogo';
 /**
  * Abordagem utilizando jasmine.SpyObj<T>
  */
-describe('StatusJogoService', () => {
+fdescribe('StatusJogoService', () => {
   let jogoServiceSpy: jasmine.SpyObj<JogoService>;
   let service: StatusJogoService;
 

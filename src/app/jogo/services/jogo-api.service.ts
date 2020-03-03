@@ -57,7 +57,7 @@ export class JogoApiService {
    * Retorna um dado padrão para continuação do fluxo do Observable em caso de erro no request
    * @param dadoPadrao dado a ser retornado
    */
-  private retornarDadoPadraoEmCasoDeErro(dadoPadrao: any) {
+  private retornarDadoPadraoEmCasoDeErro<T>(dadoPadrao: T) {
     return () => of(dadoPadrao);
   }
 }
