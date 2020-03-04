@@ -3,9 +3,6 @@ import { JogoService } from './jogo.service';
 import { Pergunta } from '../models/pergunta';
 import { Jogo } from '../models/jogo';
 
-/**
- * Abordagem utilizando jasmine.SpyObj<T>
- */
 describe('StatusJogoService', () => {
   let jogoServiceSpy: jasmine.SpyObj<JogoService>;
   let service: StatusJogoService;
