@@ -13,7 +13,7 @@ class TestComponent {
   estado: EstadoResposta = EstadoResposta.NAO_RESPONDIDA;
 }
 
-describe('ValidaRespostaDirective', () => {
+fdescribe('ValidaRespostaDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
 

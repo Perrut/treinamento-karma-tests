@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusJogoComponent } from './status-jogo.component';
 import { StatusJogoService } from '../services/status-jogo.service';
 
-describe('StatusJogoComponent', () => {
+fdescribe('StatusJogoComponent', () => {
   let statusJogoServiceSpy: jasmine.SpyObj<StatusJogoService>;
 
   let component: StatusJogoComponent;

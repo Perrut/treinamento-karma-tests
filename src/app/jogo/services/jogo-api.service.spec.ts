@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Jogo } from '../models/jogo';
 
-describe('JogoApiService', () => {
+fdescribe('JogoApiService', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
   let service: JogoApiService;

@@ -3,7 +3,7 @@ import { JogoService } from './jogo.service';
 import { Pergunta } from '../models/pergunta';
 import { Jogo } from '../models/jogo';
 
-describe('StatusJogoService', () => {
+fdescribe('StatusJogoService', () => {
   let jogoServiceSpy: jasmine.SpyObj<JogoService>;
   let service: StatusJogoService;
 
