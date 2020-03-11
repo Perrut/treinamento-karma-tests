@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JogoComponent } from './jogo.component';
 import { ValidaRespostaDirective } from '../directives/valida-resposta.directive';
@@ -11,6 +11,8 @@ import { Pergunta } from '../models/pergunta';
 import { By } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { Resposta } from '../models/resposta';
+import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
+import { EstadoResposta } from '../enums/estado-resposta';
 
 fdescribe('JogoComponent', () => {
   let component: JogoComponent;
@@ -49,29 +51,13 @@ fdescribe('JogoComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+
   it('#inicializarJogo deve chamar rota home quando não houver jogo acontecendo', () => {
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
     expect(component.perguntaAtual).toBeUndefined();
-  });
-
-  it('#inicializarJogo deve definir valor de perguntaAtual home quando houver jogo acontecendo', () => {
-    const jogoStub = new Jogo('NomeJogador');
-    const perguntaAtualStub = new Pergunta();
-    perguntaAtualStub.id = 'id-pergunta';
-    perguntaAtualStub.question = 'fake question';
-
-    spyOn(jogoService, 'getJogo').and.returnValue(jogoStub);
-    spyOn(jogoService, 'getPerguntaAtual').and.returnValue(perguntaAtualStub);
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    const element = fixture.debugElement.query(By.css('h2'));
-    const h2: HTMLElement = element.nativeElement;
-
-    expect(routerSpy.navigate).toHaveBeenCalledTimes(1);
-    expect(component.perguntaAtual).toBe(perguntaAtualStub);
-    expect(h2.textContent).toContain(perguntaAtualStub.question);
   });
 
   it('#inicializarJogo deve definir valor de perguntaAtual quando houver jogo acontecendo', () => {
@@ -89,57 +75,59 @@ fdescribe('JogoComponent', () => {
     const element = fixture.debugElement.query(By.css('h2'));
     const h2: HTMLElement = element.nativeElement;
 
+    // é chamado sempre uma vez por conta do beforeEach
     expect(routerSpy.navigate).toHaveBeenCalledTimes(1);
     expect(component.perguntaAtual).toBe(perguntaAtualStub);
     expect(h2.textContent).toContain(perguntaAtualStub.question);
   });
 
-  afterEach(() => {
-    httpTestingController.verify();
-  });
-
-  fit('#enviarResposta deve encerrar partida quando resposta fornecida for incorreta', async(() => {
-    const jogoResponse = { correct: false, correct_answer_id: 0 };
-    const jogoObjResponse = new Jogo('NomeJogador');
-    jogoObjResponse.id = 'teste';
-
-    const testResponse = {game: jogoObjResponse, questions: []};
-
-    const jogoStub = new Jogo('NomeJogador');
-    jogoStub.id = 'id-jogo';
-
+  it('#enviarResposta deve obter marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
+    const idRespostaCorreta = 1;
+    const objRespostaStub = { correct: false, correct_answer_id: idRespostaCorreta };
     const perguntaStub = new Pergunta();
-    perguntaStub.id = (Math.random() * 10).toFixed(0);
-    const respostaCorreta = new Resposta('resposta correta');
-    respostaCorreta.id = 0;
-    const respostaStub = new Resposta('conteúdo resposta');
-    respostaStub.id = 5;
-    perguntaStub.answers = [respostaStub, respostaCorreta];
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '2';
+    const respostaStub = new Resposta('resposta incorreta');
+    respostaStub.id = 3;
+    const jogoStub = new Jogo('NomeJogador');
+    jogoStub.id = '4';
+    const respostaCorretaStub = new Resposta('resposta correta');
+    respostaCorretaStub.id = idRespostaCorreta;
+    perguntaStub.answers = [respostaStub, respostaCorretaStub];
+    const jogoObjStub = { game: jogoStub, questions: [perguntaStub] };
 
     spyOn(jogoService, 'getJogo').and.returnValue(jogoStub);
     spyOn(jogoService, 'getPerguntaAtual').and.returnValue(perguntaStub);
+    const spyt = spyOn(jogoService, 'encerrarJogo');
+    spyt.and.callThrough();
 
-    jogoService.criarNovoJogo('').subscribe();
+    jogoService.criarNovoJogo('NomeJogador').subscribe(_ => {
+      component.perguntaAtual = perguntaStub;
+      fixture.detectChanges();
+      component.enviarResposta(perguntaStub, respostaStub);
+      fixture.detectChanges();
 
-    component.ngOnInit();
-    fixture.detectChanges();
-    component.enviarResposta(perguntaStub, respostaStub);
+      fixture.whenStable().then(__ => {
+        expect(respostaStub.estadoResposta).toBe(EstadoResposta.INCORRETA);
+        expect(jogoStub.score).toBe(0);
+        expect(spyt).toHaveBeenCalledTimes(1);
+      });
 
-    fixture.detectChanges();
+    });
 
     let req = httpTestingController.expectOne(`${apiUrl}/games`);
     expect(req.request.method).toEqual('POST');
 
-    req.flush(testResponse);
+    req.flush(jogoObjStub);
 
     req = httpTestingController.expectOne(`${apiUrl}/questions/answer/${perguntaStub.id}/${respostaStub.id}`);
     expect(req.request.method).toEqual('POST');
 
-    req.flush(jogoResponse);
+    req.flush(objRespostaStub);
 
-    req = httpTestingController.expectOne(`${apiUrl}/games/${jogoObjResponse.id}`);
+    req = httpTestingController.expectOne(`${apiUrl}/games/${jogoStub.id}`);
     expect(req.request.method).toEqual('PUT');
 
-    req.flush(jogoObjResponse);
+    req.flush(jogoStub);
   }));
 });
