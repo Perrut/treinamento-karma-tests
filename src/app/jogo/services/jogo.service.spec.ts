@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { Pergunta } from '../models/pergunta';
 import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
 
-fdescribe('JogoService', () => {
+describe('JogoService', () => {
   let service: JogoService;
   let jogoApiServiceSpy: jasmine.SpyObj<JogoApiService>;
   let routerSpy: jasmine.SpyObj<Router>;

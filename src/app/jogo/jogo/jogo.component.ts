@@ -42,17 +42,15 @@ export class JogoComponent implements OnInit {
    */
   enviarResposta(pergunta: Pergunta, resposta: Resposta): void {
     this.jogoService.responder(pergunta.id, resposta.id).subscribe((respostaEnviada) => {
-      if (respostaEnviada) {
-        if (respostaEnviada.correta) {
-          resposta.estadoResposta = EstadoResposta.CORRETA;
-          this.jogoService.atualizaEstado();
-          this.proximaPergunta();
-        } else {
-          resposta.estadoResposta = EstadoResposta.INCORRETA;
-          this.marcarRespostaCorreta(respostaEnviada.idCorreta);
-          this.jogoService.getJogo().score = Number(this.statusComponent.pontosErrar);
-          this.jogoService.encerrarJogo();
-        }
+      if (respostaEnviada.correta) {
+        resposta.estadoResposta = EstadoResposta.CORRETA;
+        this.jogoService.atualizaEstado();
+        this.proximaPergunta();
+      } else {
+        resposta.estadoResposta = EstadoResposta.INCORRETA;
+        this.marcarRespostaCorreta(respostaEnviada.idCorreta);
+        this.jogoService.getJogo().score = Number(this.statusComponent.pontosErrar);
+        this.jogoService.encerrarJogo();
       }
     });
   }

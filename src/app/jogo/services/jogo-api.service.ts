@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Jogo } from '../models/jogo';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, filter } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Pergunta } from '../models/pergunta';
 
@@ -49,6 +49,7 @@ export class JogoApiService {
     return this.http
       .post<{ correta: boolean, idCorreta: number }>(`${this.apiUrl}/questions/answer/${pergunta_id}/${resposta_id}`, {}).pipe(
         catchError(this.retornarDadoPadraoEmCasoDeErro(null)),
+        filter(resposta => resposta !== null),
         map((resposta) => ({ correta: resposta.correct, idCorreta: resposta.correct_answer_id }))
       );
   }

@@ -6,7 +6,7 @@ import { JogoService } from 'src/app/jogo/services/jogo.service';
 import { By } from '@angular/platform-browser';
 import { Jogo } from 'src/app/jogo/models/jogo';
 
-fdescribe('TelaPontuacaoComponent', () => {
+describe('TelaPontuacaoComponent', () => {
   let component: TelaPontuacaoComponent;
   let fixture: ComponentFixture<TelaPontuacaoComponent>;
   let routerSpy: jasmine.SpyObj<Router>;

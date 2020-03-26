@@ -14,7 +14,7 @@ import { Resposta } from '../models/resposta';
 import { DificuldadePergunta } from '../enums/dificuldade-pergunta';
 import { EstadoResposta } from '../enums/estado-resposta';
 
-fdescribe('JogoComponent', () => {
+describe('JogoComponent', () => {
   let component: JogoComponent;
   let fixture: ComponentFixture<JogoComponent>;
   let routerSpy: jasmine.SpyObj<Router>;
@@ -81,7 +81,7 @@ fdescribe('JogoComponent', () => {
     expect(h2.textContent).toContain(perguntaAtualStub.question);
   });
 
-  it('#enviarResposta deve obter marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
+  it('#enviarResposta deve marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
     const idRespostaCorreta = 1;
     const objRespostaStub = { correct: false, correct_answer_id: idRespostaCorreta };
     const perguntaStub = new Pergunta();
@@ -96,8 +96,6 @@ fdescribe('JogoComponent', () => {
     perguntaStub.answers = [respostaStub, respostaCorretaStub];
     const jogoObjStub = { game: jogoStub, questions: [perguntaStub] };
 
-    spyOn(jogoService, 'getJogo').and.returnValue(jogoStub);
-    spyOn(jogoService, 'getPerguntaAtual').and.returnValue(perguntaStub);
     const spyt = spyOn(jogoService, 'encerrarJogo');
     spyt.and.callThrough();
 
@@ -129,5 +127,160 @@ fdescribe('JogoComponent', () => {
     expect(req.request.method).toEqual('PUT');
 
     req.flush(jogoStub);
+  }));
+
+  it('#enviarResposta deve obter marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
+    const idRespostaCorreta = 1;
+    const objRespostaStub = { correct: true, correct_answer_id: idRespostaCorreta };
+    const perguntaStub = new Pergunta();
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '2';
+    const respostaStub = new Resposta('resposta incorreta');
+    respostaStub.id = 3;
+    const jogoStub = new Jogo('NomeJogador');
+    jogoStub.id = '4';
+    const respostaCorretaStub = new Resposta('resposta correta');
+    respostaCorretaStub.id = idRespostaCorreta;
+    perguntaStub.answers = [respostaStub, respostaCorretaStub];
+    const jogoObjStub = { game: jogoStub, questions: [perguntaStub] };
+
+    const spyProximaPergunta = spyOn(jogoService, 'proximaPergunta');
+    spyProximaPergunta.and.callThrough();
+    const spyEncerrarJogo = spyOn(jogoService, 'encerrarJogo');
+    spyEncerrarJogo.and.callThrough();
+
+    jogoService.criarNovoJogo('NomeJogador').subscribe(_ => {
+      component.perguntaAtual = perguntaStub;
+      fixture.detectChanges();
+      component.enviarResposta(perguntaStub, respostaCorretaStub);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(__ => {
+        expect(respostaCorretaStub.estadoResposta).toBe(EstadoResposta.CORRETA);
+        expect(jogoStub.score).toBe(100000);
+        expect(spyProximaPergunta).toHaveBeenCalledTimes(1);
+        expect(spyEncerrarJogo).toHaveBeenCalledTimes(1);
+      });
+
+    });
+
+    let req = httpTestingController.expectOne(`${apiUrl}/games`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush(jogoObjStub);
+
+    req = httpTestingController.expectOne(`${apiUrl}/questions/answer/${perguntaStub.id}/${respostaCorretaStub.id}`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush(objRespostaStub);
+
+    req = httpTestingController.expectOne(`${apiUrl}/games/${jogoStub.id}`);
+    expect(req.request.method).toEqual('PUT');
+
+    req.flush(jogoStub);
+  }));
+
+  it('#enviarResposta deve obter marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
+    const idRespostaCorreta = 1;
+    const objRespostaStub = { correct: true, correct_answer_id: idRespostaCorreta };
+    const perguntaStub = new Pergunta();
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '2';
+    const proximaPerguntaStub = new Pergunta();
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '3';
+    const respostaStub = new Resposta('resposta incorreta');
+    respostaStub.id = 3;
+    const jogoStub = new Jogo('NomeJogador');
+    jogoStub.id = '4';
+    const respostaCorretaStub = new Resposta('resposta correta');
+    respostaCorretaStub.id = idRespostaCorreta;
+    perguntaStub.answers = [respostaStub, respostaCorretaStub];
+    proximaPerguntaStub.answers = [respostaStub, respostaCorretaStub];
+    const jogoObjStub = { game: jogoStub, questions: [perguntaStub, proximaPerguntaStub] };
+
+    const spyProximaPergunta = spyOn(jogoService, 'proximaPergunta');
+    spyProximaPergunta.and.callThrough();
+
+    jogoService.criarNovoJogo('NomeJogador').subscribe(_ => {
+      component.perguntaAtual = perguntaStub;
+      fixture.detectChanges();
+
+      const spyStatusComponent = spyOn(component.statusComponent, 'atualizaStatus');
+      spyStatusComponent.and.callThrough();
+
+      component.enviarResposta(perguntaStub, respostaCorretaStub);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(__ => {
+        expect(respostaCorretaStub.estadoResposta).toBe(EstadoResposta.CORRETA);
+        expect(jogoStub.score).toBe(100000);
+        expect(spyProximaPergunta).toHaveBeenCalledTimes(1);
+        setTimeout(() => expect(spyStatusComponent).toHaveBeenCalledTimes(1), 2000);
+      });
+
+    });
+
+    let req = httpTestingController.expectOne(`${apiUrl}/games`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush(jogoObjStub);
+
+    req = httpTestingController.expectOne(`${apiUrl}/questions/answer/${perguntaStub.id}/${respostaCorretaStub.id}`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush(objRespostaStub);
+  }));
+
+  it('#enviarResposta deve obter marcar resposta correta e encerrar jogo ao se enviar pergunta com resposta incorreta', async(() => {
+    const idRespostaCorreta = 1;
+    const objRespostaStub = { correct: true, correct_answer_id: idRespostaCorreta };
+    const perguntaStub = new Pergunta();
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '2';
+    const proximaPerguntaStub = new Pergunta();
+    perguntaStub.level = DificuldadePergunta.DIFICIL;
+    perguntaStub.id = '3';
+    const respostaStub = new Resposta('resposta incorreta');
+    respostaStub.id = 3;
+    const jogoStub = new Jogo('NomeJogador');
+    jogoStub.id = '4';
+    const respostaCorretaStub = new Resposta('resposta correta');
+    respostaCorretaStub.id = idRespostaCorreta;
+    perguntaStub.answers = [respostaStub, respostaCorretaStub];
+    proximaPerguntaStub.answers = [respostaStub, respostaCorretaStub];
+    const jogoObjStub = { game: jogoStub, questions: [perguntaStub, proximaPerguntaStub] };
+
+    const spyProximaPergunta = spyOn(jogoService, 'proximaPergunta');
+    spyProximaPergunta.and.callThrough();
+
+    jogoService.criarNovoJogo('NomeJogador').subscribe(_ => {
+      component.perguntaAtual = perguntaStub;
+      fixture.detectChanges();
+
+      const spyStatusComponent = spyOn(component.statusComponent, 'atualizaStatus');
+      spyStatusComponent.and.callThrough();
+
+      component.enviarResposta(perguntaStub, respostaCorretaStub);
+      fixture.detectChanges();
+
+      fixture.whenStable().then(__ => {
+        // expect(respostaCorretaStub.estadoResposta).toBe(EstadoResposta.CORRETA);
+        // expect(jogoStub.score).toBe(100000);
+        // expect(spyProximaPergunta).toHaveBeenCalledTimes(1);
+        // setTimeout(() => expect(spyStatusComponent).toHaveBeenCalledTimes(1), 2000);
+      });
+
+    });
+
+    let req = httpTestingController.expectOne(`${apiUrl}/games`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush(jogoObjStub);
+
+    req = httpTestingController.expectOne(`${apiUrl}/questions/answer/${perguntaStub.id}/${respostaCorretaStub.id}`);
+    expect(req.request.method).toEqual('POST');
+
+    req.flush('Erro interno', { status: 500, statusText: 'Internal Server Error' });
   }));
 });

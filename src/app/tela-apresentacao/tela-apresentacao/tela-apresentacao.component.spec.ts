@@ -8,7 +8,7 @@ import { Jogo } from 'src/app/jogo/models/jogo';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 
-fdescribe('TelaApresentacaoComponent', () => {
+describe('TelaApresentacaoComponent', () => {
   let component: TelaApresentacaoComponent;
   let fixture: ComponentFixture<TelaApresentacaoComponent>;
   let jogoServiceSpy: jasmine.SpyObj<JogoService>;
