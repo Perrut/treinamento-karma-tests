@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { TelaApresentacaoRoutingModule } from './tela-apresentacao-routing.module';
 import { TelaApresentacaoComponent } from './tela-apresentacao/tela-apresentacao.component';
 
 
@@ -10,8 +9,7 @@ import { TelaApresentacaoComponent } from './tela-apresentacao/tela-apresentacao
   declarations: [TelaApresentacaoComponent],
   imports: [
     CommonModule,
-    FormsModule,
-    TelaApresentacaoRoutingModule
+    FormsModule
   ]
 })
 export class TelaApresentacaoModule { }
