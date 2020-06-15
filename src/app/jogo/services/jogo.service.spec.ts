@@ -34,7 +34,7 @@ describe('JogoService', () => {
   });
 
   it('#atualizaEstado deve atualizar estado do jogo', (done: DoneFn) => {
-
+    done();
   });
 
   it('#encerrarJogo deve redirecionar para tela de pontuacao', fakeAsync(() => {
