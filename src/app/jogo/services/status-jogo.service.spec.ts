@@ -25,26 +25,6 @@ describe('StatusJogoService', () => {
   });
 
   it('#atualizaStatus deve atualizar status quando houver próxima pergunta', () => {
-    const stubProximaPergunta = new Pergunta();
-    stubProximaPergunta.id = 'id-proxima-pergunta';
-    jogoServiceSpy.verificaProximaPergunta.and.returnValue(stubProximaPergunta);
 
-    const stubValorPergunta = 1000;
-    jogoServiceSpy.getValorPergunta.and.returnValue(stubValorPergunta);
-
-    const novoStatus = service.atualizaStatus({ errar: '0', parar: '1000', acertar: '0' });
-
-    expect({ errar: '500', parar: '1000', acertar: '2000' }).toEqual(novoStatus);
-  });
-
-  it('#atualizaStatus deve atualizar status quando não houver próxima pergunta', () => {
-    jogoServiceSpy.verificaProximaPergunta.and.returnValue(null);
-
-    const stubValorPergunta = 10000;
-    jogoServiceSpy.getValorPergunta.and.returnValue(stubValorPergunta);
-
-    const novoStatus = service.atualizaStatus({ errar: '0', parar: '1000', acertar: '0' });
-
-    expect({ errar: '0', parar: '1000', acertar: '10000' }).toEqual(novoStatus);
   });
 });

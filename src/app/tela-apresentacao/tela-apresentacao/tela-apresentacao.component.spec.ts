@@ -37,42 +37,11 @@ describe('TelaApresentacaoComponent', () => {
     fixture.detectChanges();
   });
 
-  it('#iniciarJogo deve chamar criarNovo jogo e navegar para tela de partida', () => {
-    const jogoStub = new Jogo('NomeJogador');
-    jogoServiceSpy.criarNovoJogo.and.returnValue(of(jogoStub));
-
-    component.nomeJogador = 'Teste';
-
-    component.iniciarJogo();
-
-    expect(jogoServiceSpy.criarNovoJogo).toHaveBeenCalledWith('Teste');
-    expect(routerSpy.navigate).toHaveBeenCalledWith(['jogo']);
-  });
-
   it('#deve alterar nomeJogador com base no valor do input', async(() => {
-    fixture.whenStable().then(() => {
-      const input = fixture.debugElement.query(By.css('input'));
-      const el = input.nativeElement;
 
-      expect(el.value).toBe('');
-
-      el.value = 'someValue';
-      el.dispatchEvent(new Event('input'));
-
-      expect(fixture.componentInstance.nomeJogador).toBe('someValue');
-    });
   }));
 
   it('#deve chamar iniciarJogo ao se clicar no botão do formulário', async(() => {
-    const jogoStub = new Jogo('NomeJogador');
-    jogoServiceSpy.criarNovoJogo.and.returnValue(of(jogoStub));
 
-    const buttonD = fixture.debugElement.query(By.css('button'));
-    const button: HTMLElement = buttonD.nativeElement;
-    button.click();
-
-    fixture.whenStable().then(() => {
-      expect(jogoServiceSpy.criarNovoJogo).toHaveBeenCalled();
-    });
   }));
 });
