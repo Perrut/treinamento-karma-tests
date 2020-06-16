@@ -4,6 +4,7 @@ import { Jogo } from '../models/jogo';
 import { catchError, map, filter } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Pergunta } from '../models/pergunta';
+import { environment } from 'src/environments/environment';
 
 /**
  * Serviço responsável por fazer as chamadas aos endpoints
@@ -16,7 +17,7 @@ export class JogoApiService {
   /**
    * Url do serviço
    */
-  private apiUrl = 'https://salty-tor-81757.herokuapp.com';
+  private apiUrl = environment.backendUrl;
 
   constructor(private http: HttpClient) { }
 
